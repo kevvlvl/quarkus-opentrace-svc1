@@ -2,7 +2,7 @@
 
 This example showcases opentracing using Quarkus and Smallrye-Opentracing
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+If you want to learn more about Quarkus, please visit its website: https://quarkus.io/. The specific guide followed was this one https://quarkus.io/guides/opentracing but with a focus on deploying everything as containers.
 
 ## Running the application
 
