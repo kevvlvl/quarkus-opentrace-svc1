@@ -26,7 +26,7 @@ Or to deploy in a container:
 
 **Note**: This is required when deploying locally using docker. If you want to deploy on a local kubernetes/minikube (or minishift) instance, then the procedure will be different but ensure traffic that be allowed between the pods for ports related to Jaeger.
 
-Create a new docker network: docker network app-network. This will ensure the containers are deployed on the same network and allow name resolution:
+Create a new docker network (named app-network). This will ensure the containers are deployed on the same network and allow name resolution:
 ```
 docker network create app-network
 docker network ls
