@@ -1,4 +1,4 @@
-# quarkus-opentrace-svc1 project
+``  # quarkus-opentrace-svc1 project
 
 This example showcases opentracing using Quarkus and Smallrye-Opentracing
 
@@ -31,6 +31,12 @@ Create a new docker network (named app-network). This will ensure the containers
 docker network create app-network
 docker network ls
 ``` 
+
+#### Deploy on Kubernetes
+
+1. See the yaml files in k8s-deploy
+2. Identify the nodeport mapped to the console 16686
+3. Access the URL using nodeIp:nodePort/search. Example: http://192.168.99.101:32495/search (in this case I use minikube and 32495 is selected by k8s when creating node ports)
 
 #### Jaeger end-to-end distributing tracing system
 
