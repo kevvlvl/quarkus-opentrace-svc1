@@ -1,4 +1,4 @@
-``  # quarkus-opentrace-svc1 project
+# quarkus-opentrace-svc1 project
 
 This example showcases opentracing using Quarkus and Smallrye-Opentracing
 
