@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: app-svc1
-  name: app-svc1
+    app: app1
+  name: app1
   namespace: app-space
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: app-svc1
+      app: app1
   template:
     metadata:
       labels:
-        app: app-svc1
+        app: app1
     spec:
       containers:
       - image: quarkus/quarkus-opentrace-svc1

@@ -16,7 +16,7 @@
 ###
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.1
 
-ENV JAEGER_SERVICE_NAME="svc1" \
+ENV JAEGER_SERVICE_NAME="app1" \
     JAEGER_SAMPLER_TYPE="const" \
     JAEGER_SAMPLER_PARAM="1"
 

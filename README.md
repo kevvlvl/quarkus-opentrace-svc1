@@ -22,48 +22,30 @@ Or to deploy in a container:
 
 ## Procedure
 
-#### Create Docker Network
-
-**Note**: This is required when deploying locally using docker. If you want to deploy on a local kubernetes/minikube (or minishift) instance, then the procedure will be different but ensure traffic that be allowed between the pods for ports related to Jaeger.
-
-Create a new docker network (named app-network). This will ensure the containers are deployed on the same network and allow name resolution:
-```
-docker network create app-network
-docker network ls
-``` 
-
-#### Deploy on Kubernetes
+#### Deploy on Kubernetes Minikube
 
 - minikube start
 - eval $(minikube docker-env) -- this will ensure we build images to minikube's docker env
 - docker image build -f src/main/docker/Dockerfile.native -t quarkus/quarkus-opentrace-svc1 .
-- kubectl create -f namespace.yaml
-- kubectl apply -f jaeger-deploy.yaml
-- kubectl apply -f jaeger-service.yaml
-- kubectl apply -f appsvc1-deploy.yaml
-- kubectl apply -f appsvc1-service.yaml
+- kubectl create -f k8s-deploy/namespace.yaml
+- kubectl apply -f k8s-deploy/jaeger-deploy.yaml
+- kubectl apply -f k8s-deploy/jaeger-service.yaml
+- kubectl apply -f k8s-deploy/app-deploy.yaml
+- kubectl apply -f k8s-deploy/app-service.yaml
 
-#### Jaeger end-to-end distributing tracing system
+_Access the application_
+  
+Use "minikube service list" to list all exposed services and the associated NodePort. Use these URLs to access curl or access on the browser
 
-Start the Jaeger open tracing system in the app-network
-```
-docker container run --name jaeger --network app-network -p 5775:5775/udp -p 6831:6831/udp -p 6832:6832/udp -p 5778:5778 -p 16686:16686 -p 14268:14268 jaegertracing/all-in-one:latest
-```
-
-Access the UI to validate that Jaeger is up: http://localhost:16686/search
-
-#### Running the Microservice
-
-Now, run quarkus svc1 using the native container docker file again in the app-network that we just created. Jaeger configurations are set as environment variables in that dockerfile
-```
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-docker image build -f src/main/docker/Dockerfile.native -t quarkus/quarkus-opentrace-svc1 .
-docker container run --name svc1 --network app-network -i --rm -p 8080:8080 quarkus/quarkus-opentrace-svc1
-``` 
-
-Try to call the GET endpoint
-```
-curl http://localhost:8080/api/health
-```
+Identify two important URLs (with their NodePorts): the jaeger console service, and the application service
+- Access the jaeger console using the jaeger-console-svc url
+- Try to curl the application service at the endpoint /api/health. Example: http://192.168.99.102:31363/api/health
 
 Following this action, refresh the Jaeger UI and you should see "quarkus-opentrace-svc1" under services with the trace ID info
+
+_Troubleshooting_
+
+To troubleshoot k8s and connectivity between services, I use a busybox with curl such as the following:
+```  
+kubectl run busybox --image=yauritux/busybox-curl --restart=Never --rm -it /bin/sh
+```
