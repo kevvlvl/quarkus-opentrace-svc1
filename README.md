@@ -34,9 +34,14 @@ docker network ls
 
 #### Deploy on Kubernetes
 
-1. See the yaml files in k8s-deploy
-2. Identify the nodeport mapped to the console 16686
-3. Access the URL using nodeIp:nodePort/search. Example: http://192.168.99.101:32495/search (in this case I use minikube and 32495 is selected by k8s when creating node ports)
+- minikube start
+- eval $(minikube docker-env) -- this will ensure we build images to minikube's docker env
+- docker image build -f src/main/docker/Dockerfile.native -t quarkus/quarkus-opentrace-svc1 .
+- kubectl create -f namespace.yaml
+- kubectl apply -f jaeger-deploy.yaml
+- kubectl apply -f jaeger-service.yaml
+- kubectl apply -f appsvc1-deploy.yaml
+- kubectl apply -f appsvc1-service.yaml
 
 #### Jaeger end-to-end distributing tracing system
 
